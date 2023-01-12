@@ -150,3 +150,45 @@ function completeEditor(
         context.fail(error.message);
     }
 }
+
+/**
+ * @param {Editor} editor
+ * @param {Object} parameters
+ * @param {number} parameters.maximumTokensInCompletion
+ * @param {string} parameters.promptPrefix
+ * @param {number} parameters.temperature
+ * @param {Object} parameters.truncatedUsingCharactersPerToken
+ */
+function replaceSelectionWithCompletion(
+    editor,
+    {
+        maximumTokensInCompletion = 2048,
+        promptPrefix = '',
+        temperature = 0.7,
+        truncatedUsingCharactersPerToken = 3.5,
+    } = {
+        maximumTokensInCompletion: undefined,
+        promptPrefix: undefined,
+        temperature: undefined,
+        truncatedUsingCharactersPerToken: undefined,
+    }
+) {
+    const originalContent = editor.getSelectedText().trim();
+    const prompt = promptPrefix + originalContent;
+
+    try {
+        const completion = new OpenAI().getCompletion(
+            prompt,
+            {
+                maximumTokensInCompletion,
+                temperature,
+                truncatedUsingCharactersPerToken,
+            }
+        ).trim();
+
+        editor.save();
+        editor.setSelectedText(completion);
+    } catch(error) {
+        context.fail(error.message);
+    }
+}
