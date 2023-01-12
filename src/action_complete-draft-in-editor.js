@@ -1,5 +1,5 @@
 //
-// action_complete-draft.js
+// action_complete-draft-in-editor.js
 // Drafts: AI
 // By Kyle Hughes
 //
@@ -14,8 +14,8 @@
 // - truncation_characters_per_token
 //
 
-complete(
-    draft,
+completeEditor(
+    editor,
     {
         maximumTokensInCompletion: getTemplateTagAsNumberIfItExists(draft, 'max_tokens_in_completion'),
         promptPrefix: getTemplateTagIfItExists(draft, 'prompt_prefix'),

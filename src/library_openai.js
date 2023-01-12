@@ -106,19 +106,19 @@ class OpenAI {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Draft Modifiers
+// Global Functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * @param {Draft} draft
+ * @param {Editor} editor
  * @param {Object} parameters
  * @param {number} parameters.maximumTokensInCompletion
  * @param {string} parameters.promptPrefix
  * @param {number} parameters.temperature
  * @param {Object} parameters.truncatedUsingCharactersPerToken
  */
-function complete(
-    draft,
+function completeEditor(
+    editor,
     {
         maximumTokensInCompletion = 2048,
         promptPrefix = '',
@@ -131,7 +131,7 @@ function complete(
         truncatedUsingCharactersPerToken: undefined,
     }
 ) {
-    const originalContent = draft.content.trim();
+    const originalContent = editor.getText().trim();
     const prompt = promptPrefix + originalContent;
 
     try {
@@ -144,9 +144,8 @@ function complete(
             }
         );
 
-        draft.saveVersion();
-        draft.content = originalContent + completion;
-        draft.update();
+        editor.save();
+        editor.setText(originalContent + completion)
     } catch(error) {
         context.fail(error.message);
     }
