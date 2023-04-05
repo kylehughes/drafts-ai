@@ -1,4 +1,4 @@
-# Drafts: AI
+# DraftGPT
 
 [Action Group in Drafts Directory]()
 
